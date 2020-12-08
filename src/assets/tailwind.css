@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Circular;
+  src: url(fonts/Circular/CircularStd-Book.woff);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Circular;
+  src: url(fonts/Circular/CircularStd-Bold.woff);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Circular;
+  src: url(fonts/Circular/CircularStd-Black.woff);
+  font-weight: 900;
+}
+
+* {
+  outline: none !important;
+  font-family: 'Circular';
+  letter-spacing: 0.01em;
+}
+
+h1 {
+  @apply text-5xl font-black text-black;
+}
+
+h2 {
+  @apply text-3xl font-black text-black;
+}
+
+h3 {
+  @apply text-2xl font-black text-black;
+}
+
+h4 {
+  @apply text-xl font-black text-black;
+}
+
+label {
+  @apply block mb-2 font-bold text-sm text-black;
+}
+
+a {
+  @apply text-green opacity-70 hover:opacity-50;
+}
+
+a.lowkey {
+  @apply text-black opacity-50 hover:opacity-30;
+}
+
+.text-input {
+  @apply w-full py-3 px-4 border-2 rounded;
+}
+
+.text-input:hover {
+  @apply border-gray-400;
+}
+
+.text-input:focus {
+  @apply border-green;
+}
+
+.text-input-with-icon {
+  @apply text-input flex flex-row items-center;
+}
+
+.text-input-with-icon > input {
+  @apply w-full mt-1 ml-3;
+}
+
+.text-input-with-icon > img {
+  height: 16px;
+}
+
+.btn-primary {
+  @apply py-3 px-16 bg-green rounded font-bold text-white;
+}
+
+.btn-primary:not([disabled]):hover {
+  @apply opacity-70;
+}
+
+.btn-primary:disabled {
+  @apply opacity-30;
+}
+
+.modal {
+  width: 100%;
+  max-width: 480px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  @apply py-8 px-8 grid auto-rows-auto gap-4 bg-white text-left rounded shadow-xl;
+}
+
+.header-gradient {
+	color: transparent;
+  background: #00D95F;
+  background-clip: text;
+}
