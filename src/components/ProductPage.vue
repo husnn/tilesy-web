@@ -1,13 +1,16 @@
 <template>
   <div id="product-page" class="mx-auto">
-    <div id="product-page__main" class="pt-8 text-left grid auto-rows-auto sm:grid-cols-2 items-center">
+    <div id="product-page__main" class="pt-4 text-left grid auto-rows-auto sm:grid-cols-2 items-center">
       <div class="p-4 md:p-8">
         <PlayerMockup class="md:w-3/4 mx-auto" :coverImage="coverImage" :songName="songName" :artistName="artistName" :duration="duration" :timePlayed="timePlayed" />
       </div>
       <div id="product-page__attributes" class="p-4 md:p-8 grid auto-rows-auto gap-8">
         <h1 class="hidden sm:block py-4">Customised<br />Music Player Plaque</h1>
         <div id="attributes__fields" class="md:w-3/4 grid auto-rows-auto gap-8">
-          <button class="w-64 py-3 px-8 flex justify-center items-center gap-4 text-sm text-white bg-black rounded" @click="showSpotifyModal"><img src="@/assets/images/ic-spotify.svg" width="16">Import from Spotify</button>
+          <div class="w-64 py-3 px-8 flex space-x-4 justify-center items-center text-sm text-white bg-black cursor-pointer rounded" @click="showSpotifyModal">
+            <img src="@/assets/images/ic-spotify.svg" width="21" />
+            <p>Import from Spotify</p>
+          </div>
           <div>
             <label>Name of song</label>
             <div class="text-input-with-icon">
@@ -27,7 +30,7 @@
             <div class="text-input-with-icon">
               <img src="@/assets/images/ic-paperclip.svg" />
               <input type="text" id="cover-image" class="mr-3" v-model="coverImage" autocomplete="off" />
-              <span class="mr-2 flex items-center text-xs opacity-50 hover:opacity-70 gap-2 cursor-pointer" @click="this.$refs.localCover.click()">
+              <span class="mr-2 flex space-x-2 items-center text-xs opacity-50 hover:opacity-70 cursor-pointer" @click="this.$refs.localCover.click()">
                 <img src="@/assets/images/ic-upload.svg" width="12" />
                 <span class="mt-1">Upload</span>
                 <input ref="localCover" type="file" id="local-cover-image" name="cover" class="hidden" accept="image/*" @change="uploadImage" />
@@ -64,14 +67,28 @@
       </div>
       <div>
         <h3>Hold your favourite music in your hands</h3>
-        <p class="mt-4">Get yourself a plaque of your favourite tracks.</p>
+        <p class="mt-4">Get yourself a plaque of your favourite tracks and express your taste to the world.</p>
       </div>
+
+      <carousel class="overflow-auto" :items-to-show="1.25" initialSlide="0" :wrapAround="true" :breakpoints="{
+        640: {
+          itemsToShow: 2
+        },
+        1280: {
+          itemsToShow: 3
+        }
+      }">
+        <slide v-for="(url, index) in carouselImages" :key="index" class="md:max-w-1/3">
+          <img :src="url" />
+        </slide>
+      </carousel>
+
       <div class="sm:max-w-3/4 sm:mx-auto">
-        <h3>Gift a customised plaque to a special someone.</h3>
+        <h3>Gift a customised plaque to your one.</h3>
         <p class="mt-4">Describe your feelings towards a special someone through words and a picture.</p>
       </div>
       <div class="sm:max-w-3/4 sm:mx-auto">
-        <h3>Celebrate your friendship</h3>
+        <h3>Celebrate your friendship with someone</h3>
         <p class="mt-4">Share with them a song that you're both obsessed with.</p>
       </div>
     </div>
@@ -85,7 +102,7 @@
       <img src="@/assets/images/ic-cross.svg" class="w-3 cursor-pointer opacity-70 hover:opacity-90" @click="toggleSpotifyModal" />
       <div>
         <h2 class="mt-2">Get track from Spotify</h2>
-        <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. It will ask if you want to copy the link, just do that.</p>
+        <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. Copy the link & paste it below.</p>
       </div>
       <p v-if="spotifyError" class="py-2 px-4 text-sm text-white bg-red-500 leading-relaxed rounded">{{ spotifyError }}</p>
       <div>
@@ -99,12 +116,19 @@
 
 <script>
 import axios from 'axios';
+import 'vue3-carousel/dist/carousel.css';
+import { Carousel, Slide } from 'vue3-carousel';
+
 import PlayerMockup from './PlayerMockup.vue';
 import { millisToMinutesAndSeconds } from '@/utils/timeConversion.js';
 
 export default {
   name: 'ProductPage',
-  components: { PlayerMockup },
+  components: {
+    PlayerMockup,
+    Carousel,
+    Slide
+  },
   data() {
     return {
       currency: {
@@ -121,7 +145,14 @@ export default {
       spotifyModalVisible: false,
       spotifyUrl: "",
       spotifyError: null,
-      buyButtonEnabled: true
+      buyButtonEnabled: true,
+      carouselImages: [
+        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/0b56acfa-6c39-4809-8c3b-ca6e61e78417.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/2e8ea285-2529-402e-90cd-9a7d7a80f4ab.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/7dde45f2-c7ef-41af-bf10-257e290945db.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/cdadabbb-8746-47fe-9a84-13d7b6792a5a.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/183a8e92-8e8e-427b-b9db-d5b84af99d52.jpg",
+      ]
     }
   },
   mounted() {
@@ -200,33 +231,29 @@ export default {
     async goToCheckout() {
       this.buyButtonEnabled = false;
 
-      try {
-        const stripe = new Stripe(process.env.VUE_APP_STRIPE_PK); // eslint-disable-line
+      const stripe = new Stripe(process.env.VUE_APP_STRIPE_PK); // eslint-disable-line
 
-        axios({
-          method: 'post',
-          url: `${process.env.VUE_APP_API_URL}/buy`,
-          data: {
-            currencyCode: this.currency.code,
-            song: {
-              songName: this.songName,
-              artistName: this.artistName,
-              spotifyUrl: this.spotifyUrl,
-              coverUrl: this.coverImage,
-              duration: this.duration,
-              timePlayed: this.timePlayed
-            }
+      axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/buy`,
+        data: {
+          currencyCode: this.currency.code,
+          song: {
+            songName: this.songName,
+            artistName: this.artistName,
+            spotifyUrl: this.spotifyUrl,
+            coverUrl: this.coverImage,
+            duration: this.duration,
+            timePlayed: this.timePlayed
           }
-        }).then(response => {
-          stripe.redirectToCheckout({ sessionId: response.data.stripeSession });
-        }).catch(err => {
-          console.log(err);
-        }).finally(() => {
-          this.buyButtonEnabled = true;
-        });
-      } catch (err) {
+        }
+      }).then(response => {
+        stripe.redirectToCheckout({ sessionId: response.data.stripeSession });
+      }).catch(err => {
         console.log(err);
-      }      
+      }).finally(() => {
+        this.buyButtonEnabled = true;
+      });
     }
   }
 }
