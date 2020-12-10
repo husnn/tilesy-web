@@ -5,7 +5,7 @@
         <h2>You order has been placed!</h2>
         <p class="mt-2">An order confirmation will be sent to your email address shortly.</p>
       </div>
-      <div v-if="order">
+      <div v-if="order && order.shipping">
         <h3>Shipping address</h3>
         <p class="my-2"><strong>{{ order.shipping.name }}</strong></p>
         <ul class="text-sm">
