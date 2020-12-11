@@ -62,10 +62,6 @@
 
     <div id="product-page__description" class="p-4 pb-16 grid auto-rows-auto gap-12 text-left sm:pb-24 sm:text-center border-b" style="background-color: #FAFAFA;">
       <div class="mt-4">
-        <h3>Who is this for?</h3>
-        <h4 class="mt-4"><span class="opacity-50">In short... </span>anyone.</h4>
-      </div>
-      <div>
         <h3>Hold your favourite music in your hands</h3>
         <p class="mt-4">Get yourself a plaque of your favourite tracks and express your taste to the world.</p>
       </div>
@@ -84,7 +80,7 @@
       </carousel>
 
       <div class="sm:max-w-3/4 sm:mx-auto">
-        <h3>Gift a customised plaque to your one.</h3>
+        <h3>Gift a customised plaque to your one</h3>
         <p class="mt-4">Describe your feelings towards a special someone through words and a picture.</p>
       </div>
       <div class="sm:max-w-3/4 sm:mx-auto">
@@ -93,7 +89,7 @@
       </div>
     </div>
 
-    <div class="py-8 flex gap-4 justify-center text-sm">
+    <div class="py-8 flex space-x-4 justify-center text-sm">
       <a href="#" class="lowkey">Terms & Conditions</a>
       <a href="#" class="lowkey">Privacy Policy</a>
     </div>
@@ -163,35 +159,21 @@ export default {
     });
   },
   methods: {
-    // uploadImage() {
-    //   const file = this.$refs.localCover.files[0];
-
-    //   var formData = new FormData();
-    //   formData.append("image", file);
-
-    //   axios.post(`${process.env.VUE_APP_API_URL}/upload-cover`, formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }})
-    //     .then(() => {
-    //       console.log("Image uploaded");
-    //     });
-    // },
-    scrollToTop() {
-      window.scrollTo(0,0);
-    },
     async uploadImage() {
       const file = this.$refs.localCover.files[0];
 
       if (!file) return;
 
       try {
-        const signatureReq = await axios.post(`${process.env.VUE_APP_API_URL}/sign-cover-url`, { fileName: file.name, fileType: file.type }, { headers: { 'credentials': 'include' }});
-        await axios.put(signatureReq.data.signedUrl, file, { headers: { 'Expires': 60, 'Content-Type': file.type, 'ACL': 'public-read' }});
+        const signatureReq = await axios.post(`${process.env.VUE_APP_API_URL}/sign-cover-url`, { fileName: file.name, fileType: file.type });
+        await axios.put(signatureReq.data.signedUrl, file);
         this.coverImage = signatureReq.data.url;
       } catch (err) {
         console.log(err);
       }
+    },
+    scrollToTop() {
+      window.scrollTo(0,0);
     },
     showSpotifyModal() {
       this.spotifyModalVisible = true;
