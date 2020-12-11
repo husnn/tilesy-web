@@ -42,6 +42,10 @@ h4 {
   @apply text-xl font-black text-black;
 }
 
+h5 {
+  @apply text-lg font-bold text-black;
+}
+
 label {
   @apply block mb-2 font-bold text-sm text-black;
 }
@@ -74,6 +78,10 @@ a.lowkey {
   @apply w-full mt-1 ml-3;
 }
 
+.text-input-with-icon:focus-within {
+  @apply border-green;
+}
+
 .text-input-with-icon > img {
   height: 16px;
 }
@@ -90,6 +98,14 @@ a.lowkey {
   @apply opacity-30;
 }
 
+#modal-overlay {
+  @apply fixed w-screen h-screen bg-white z-10 opacity-90 hidden;
+}
+
+#modal-overlay[visible] {
+  @apply block;
+}
+
 .modal {
   width: 100%;
   max-width: 480px;
@@ -98,10 +114,44 @@ a.lowkey {
   top: 50%;
   transform: translate(-50%, -50%);
   @apply py-8 px-8 grid auto-rows-auto gap-4 bg-white text-left rounded shadow-xl;
+  z-index: 50;
 }
 
 .header-gradient {
 	color: transparent;
   background: #00D95F;
   background-clip: text;
+}
+
+.faq {
+  @apply w-full text-left select-none;
+}
+
+.faq .title {
+  @apply w-full mt-2 flex items-center justify-between bg-white py-4 px-8 text-left rounded cursor-pointer;
+}
+
+.faq .title::after {
+  width: 16px;
+  height: 16px;
+  content: "";
+  background-image: url('./images/ic-arrow-down.svg');
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+.faq .title[open] {
+  @apply rounded-b-none;
+}
+
+.faq .title[open]::after {
+  transform: rotate(180deg);
+}
+
+.faq .panel {
+  @apply w-full hidden flex flex-col space-y-4 bg-white py-4 px-8 text-left border-t rounded-b;
+}
+
+.owl-carousel {
+  overflow: hidden;
 }
