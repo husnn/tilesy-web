@@ -1,8 +1,19 @@
 <template>
   <div id="product-page" class="mx-auto">
-    <div id="product-page__main" class="pt-4 text-left grid auto-rows-auto sm:grid-cols-2 items-center">
+    <div id="header" class="container pt-8 pb-4 px-8 mx-auto flex flex-row items-center justify-between">
+      <div class="flex flex-row items-center space-x-4">
+        <img src="@/assets/images/logo.svg" width="40" />
+        <h3>Tilesy</h3>
+      </div>
+      <div>
+        <a href="https://instagram.com/tilesyco" target="blank"><img class="hover:opacity-70" src="@/assets/images/ic-ig-logo.svg" width="21" /></a>
+      </div>
+    </div>
+    <div id="modal-overlay" @click="closeSpotifyModal"></div>
+    <div id="product-page__main" class="text-left grid auto-rows-auto sm:grid-cols-2 items-center">
       <div class="p-4 md:p-8">
-        <PlayerMockup class="md:w-3/4 mx-auto" :coverImage="coverImage" :songName="songName" :artistName="artistName" :duration="duration" :timePlayed="timePlayed" />
+        <PlayerMockup ref="playerMockup" class="md:w-3/4 mx-auto" :coverImage="coverImage" :songName="songName" :artistName="artistName" :duration="duration" :timePlayed="timePlayed" />
+        <p class="mt-4 flex flex-row justify-center space-x-4 opacity-70"><img class="opacity-50" src="@/assets/images/ic-preview.svg" width="16" /><span>Live preview</span></p>
       </div>
       <div id="product-page__attributes" class="p-4 md:p-8 grid auto-rows-auto gap-8">
         <h1 class="hidden sm:block py-4">Customised<br />Music Player Plaque</h1>
@@ -45,7 +56,7 @@
                 <span id="buy__shipping" class="block text-xs text-gray-400">+{{ shippingAmount }} Shipping</span>
               </p>
             </div>
-            <button class="w-full btn-primary" @click="goToCheckout" :disabled="spotifyModalVisible || !buyButtonEnabled">Get yours now</button>
+            <button class="w-full btn-primary" @click="goToCheckout" :disabled="!buyButtonEnabled">Get yours now</button>
             <p class="mt-8 flex justify-center items-center text-sm opacity-70 sm:justify-start"><img src="@/assets/images/ic-secure-shield.svg" width="16" /><span class="ml-4">256-Bit SSL secure & safe checkout</span></p>
           </div>
         </div>
@@ -60,33 +71,33 @@
       </svg>
     </div>
 
-    <div id="product-page__description" class="p-4 pb-16 grid auto-rows-auto gap-12 text-left sm:pb-24 sm:text-center border-b" style="background-color: #FAFAFA;">
+    <div id="product-page__description" class="p-4 pb-16 grid auto-rows-auto gap-12 text-left sm:pb-24 sm:text-center border-b overflow-hidden" style="background-color: #FAFAFA;">
       <div class="mt-4">
         <h3>Hold your favourite music in your hands</h3>
         <p class="mt-4">Get yourself a plaque of your favourite tracks and express your taste to the world.</p>
       </div>
 
-      <carousel class="overflow-auto" :items-to-show="1.25" initialSlide="0" :wrapAround="true" :breakpoints="{
-        640: {
-          itemsToShow: 2
-        },
-        1280: {
-          itemsToShow: 3
-        }
-      }">
-        <slide v-for="(url, index) in carouselImages" :key="index" class="md:max-w-1/3">
-          <img :src="url" />
-        </slide>
-      </carousel>
+      <div class="owl-carousel">
+        <img v-for="(image, index) in carouselImages" :key="index" :src="image" style="height: 350px; object-fit: cover;" />
+      </div>
 
       <div class="sm:max-w-3/4 sm:mx-auto">
-        <h3>Gift a customised plaque to your one</h3>
+        <h3>Gift a customised plaque to your significant other</h3>
         <p class="mt-4">Describe your feelings towards a special someone through words and a picture.</p>
       </div>
       <div class="sm:max-w-3/4 sm:mx-auto">
         <h3>Celebrate your friendship with someone</h3>
         <p class="mt-4">Share with them a song that you're both obsessed with.</p>
       </div>
+
+      <ul class="faq sm:max-w-3/4 sm:mx-auto">
+        <li v-for="(qa, index) in faq" :key="index">
+          <div class="title"><h5>{{ qa[0] }}</h5></div>
+          <div class="panel">
+            <p v-for="(line, index) in qa[1]" :key="index">{{ line }}</p>
+          </div>
+        </li>
+      </ul>
     </div>
 
     <div class="py-8 flex space-x-4 justify-center text-sm">
@@ -95,7 +106,7 @@
     </div>
 
     <div v-if="spotifyModalVisible" id="product-page__spotify-modal" class="modal">
-      <img src="@/assets/images/ic-cross.svg" class="w-3 cursor-pointer opacity-70 hover:opacity-90" @click="toggleSpotifyModal" />
+      <img src="@/assets/images/ic-cross.svg" class="w-3 float-right cursor-pointer opacity-70 hover:opacity-90" @click="toggleSpotifyModal" />
       <div>
         <h2 class="mt-2">Get track from Spotify</h2>
         <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. Copy the link & paste it below.</p>
@@ -105,15 +116,16 @@
         <label>Spotify link</label>
         <input type="text" id="spotify-link" class="text-input" v-model="spotifyUrl" @input="spotifyError = null;" placeholder="https://open.spotify.com/track/..." autocomplete="off" />
       </div>
-      <button class="w-full btn-primary" @click="getTrackInformation">Get information</button>
+      <button class="w-full btn-primary" @click="getTrackInformation" :disabled="!spotifyButtonEnabled">Get information</button>
     </div>
   </div>
 </template>
 
+<!-- eslint-disable -->
 <script>
 import axios from 'axios';
-import 'vue3-carousel/dist/carousel.css';
-import { Carousel, Slide } from 'vue3-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel';
 
 import PlayerMockup from './PlayerMockup.vue';
 import { millisToMinutesAndSeconds } from '@/utils/timeConversion.js';
@@ -121,9 +133,7 @@ import { millisToMinutesAndSeconds } from '@/utils/timeConversion.js';
 export default {
   name: 'ProductPage',
   components: {
-    PlayerMockup,
-    Carousel,
-    Slide
+    PlayerMockup
   },
   data() {
     return {
@@ -141,13 +151,18 @@ export default {
       spotifyModalVisible: false,
       spotifyUrl: "",
       spotifyError: null,
+      spotifyButtonEnabled: true,
       buyButtonEnabled: true,
       carouselImages: [
-        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/0b56acfa-6c39-4809-8c3b-ca6e61e78417.jpg",
-        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/2e8ea285-2529-402e-90cd-9a7d7a80f4ab.jpg",
-        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/7dde45f2-c7ef-41af-bf10-257e290945db.jpg",
-        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/cdadabbb-8746-47fe-9a84-13d7b6792a5a.jpg",
-        "https://tilesy.s3.eu-west-2.amazonaws.com/uploads/showcase/183a8e92-8e8e-427b-b9db-d5b84af99d52.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/121201967_2925785930976141_3185171781063249833_n.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/129320272_419751222517037_141585343197074418_n.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/5e98bb4646a32a8ebb453a2f86e3342f.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/c0711294ce8b779c78c735776b602e42.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_1588xN.2576333414_rkfa.jpg",
+      ],
+      faq: [
+        ['Who is this for?', ['In short... anyone.']],
+        ['Where do you deliver?', ['We ship to anywhere in the US, UK, Canada, Europe, Australia and New Zealand.']]
       ]
     }
   },
@@ -157,32 +172,71 @@ export default {
       this.currency = data.currency;
       this.priceAmount = data.amount;
     });
+
+    $('.faq .title').on('click', function() {
+      const isOpen = !$(this).attr('open');
+      $(this).attr('open', isOpen);
+
+      const panel = $(this).siblings('.panel');
+      panel.attr('closed', !isOpen);
+
+      isOpen ? panel.slideDown() : panel.slideUp();
+
+      $(this).parent().siblings().each(function() {
+        $(this).children('.title').attr('open', false);
+        $(this).children('.panel').slideUp();
+      });
+    });
+
+    $('.owl-carousel').owlCarousel({
+      margin: 10,
+      center: true,
+      loop: true,
+      items: 4,
+      lazyLoad: true,
+      responsiveClass: true,
+      responsive: {
+          0: {
+              items: 1.5
+          },
+          600: {
+              items: 3
+          },
+          1280: {
+              items: 5
+          }
+      }
+    });
   },
   methods: {
     async uploadImage() {
       const file = this.$refs.localCover.files[0];
-
       if (!file) return;
+      this.buyButtonEnabled = false;
 
       try {
         const signatureReq = await axios.post(`${process.env.VUE_APP_API_URL}/sign-cover-url`, { fileName: file.name, fileType: file.type });
-        await axios.put(signatureReq.data.signedUrl, file);
+        await axios.put(signatureReq.data.signedUrl, file, { headers: { 'Content-Type': file.type, 'ACL': 'public-read' }});
         this.coverImage = signatureReq.data.url;
+        this.scrollToTop();
       } catch (err) {
         console.log(err);
       }
+
+      this.buyButtonEnabled = true;
     },
     scrollToTop() {
       window.scrollTo(0,0);
     },
     showSpotifyModal() {
       this.spotifyModalVisible = true;
-      document.getElementById("product-page__main").style.opacity = 0.1;
+      document.querySelector("#modal-overlay").setAttribute('visible', true);
     },
     closeSpotifyModal() {
+      if (!this.spotifyModalVisible) return;
       this.spotifyModalVisible = false;
       this.spotifyError = null;
-      document.querySelector("#product-page__main").style.opacity = 1;
+      document.querySelector("#modal-overlay").removeAttribute('visible');
     },
     toggleSpotifyModal() {
       this.spotifyModalVisible ? this.closeSpotifyModal() : this.showSpotifyModal();
@@ -194,6 +248,8 @@ export default {
       }
 
       const trackId = this.spotifyUrl.split('/')[4];
+
+      this.spotifyButtonEnabled = false;
 
       axios.get(`${process.env.VUE_APP_API_URL}/get-track?trackId=${trackId}`).then(response => {
         const { data } = response;
@@ -208,10 +264,13 @@ export default {
         this.scrollToTop();
       }).catch(() => {
         this.spotifyError = 'That link may be wrong. Please try again later.';
+      }).finally(() => {
+        this.spotifyButtonEnabled = true;
       });
     },
     async goToCheckout() {
       this.buyButtonEnabled = false;
+      this.scrollToTop();
 
       const stripe = new Stripe(process.env.VUE_APP_STRIPE_PK); // eslint-disable-line
 
@@ -220,6 +279,7 @@ export default {
         url: `${process.env.VUE_APP_API_URL}/buy`,
         data: {
           currencyCode: this.currency.code,
+          mockup: this.$refs.playerMockup.$el.innerHTML,
           song: {
             songName: this.songName,
             artistName: this.artistName,

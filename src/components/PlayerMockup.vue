@@ -1,6 +1,6 @@
 <template>
   <div id="player-mockup">
-    <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink">
       <rect width="300" height="450" rx="8" fill="black" fill-opacity="0.05"/>
       <rect id="cover-placeholder" x="40" y="40" width="220" height="220" rx="4" fill="black" fill-opacity="0.05" />
       <clipPath id="cover-clip"><use xlink:href="#cover-placeholder" /></clipPath>
@@ -16,8 +16,8 @@
       <path d="M74 394L89 402.66V385.34L74 394Z" fill="#1A1A1A"/>
       <rect width="2" height="16" transform="matrix(-1 0 0 1 75 386)" fill="#1A1A1A"/>
       <foreignObject width="230" height="100%" x="40" y="285">
-        <p style="font-family='Circular, Arial, Helvetica, sans-serif'; font-size: 1em; font-weight: bold;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ songName != null ? songName : 'Name of song' }}</p>
-        <p style="font-family='Circular, Arial, Helvetica, sans-serif'; font-size: 0.75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ artistName != null ? artistName : 'Artist name' }}</p>
+        <xhtml:p style="margin: 0; padding: 0; color:black; font-family='Circular, Arial, Helvetica, sans-serif'; font-size: 1em; font-weight: bold;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ songName != null ? songName : 'Name of song' }}</xhtml:p>
+        <xhtml:p style="display:block; margin: 0; padding: 0; color:black; font-family='Circular, Arial, Helvetica, sans-serif'; font-size: 0.75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ artistName != null ? artistName : 'Artist name' }}</xhtml:p>
       </foreignObject>
     </svg>
   </div>
