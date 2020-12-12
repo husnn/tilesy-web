@@ -1,14 +1,27 @@
 <template>
   <div id="product-page" class="mx-auto">
+    <div id="header" class="container pt-8 pb-4 px-8 mx-auto flex flex-row items-center justify-between">
+      <div class="flex flex-row items-center space-x-4">
+        <img src="@/assets/images/logo.svg" width="40" />
+        <h3>Tilesy</h3>
+      </div>
+      <div>
+        <a href="https://instagram.com/tilesyco" target="blank"><img class="hover:opacity-70" src="@/assets/images/ic-ig-logo.svg" width="21" /></a>
+      </div>
+    </div>
     <div id="modal-overlay" @click="closeSpotifyModal"></div>
-    <div id="product-page__main" class="pt-4 text-left grid auto-rows-auto sm:grid-cols-2 items-center">
+    <div id="product-page__main" class="text-left grid auto-rows-auto sm:grid-cols-2 items-center">
       <div class="p-4 md:p-8">
         <PlayerMockup ref="playerMockup" class="md:w-3/4 mx-auto" :coverImage="coverImage" :songName="songName" :artistName="artistName" :duration="duration" :timePlayed="timePlayed" />
+        <div class="mt-4 text-center opacity-70">
+          <img class="inline opacity-50" src="@/assets/images/ic-preview.svg" width="16" />
+          <p class="ml-3 inline align-middle">Live preview</p>
+        </div>
       </div>
       <div id="product-page__attributes" class="p-4 md:p-8 grid auto-rows-auto gap-8">
         <h1 class="hidden sm:block py-4">Customised<br />Music Player Plaque</h1>
         <div id="attributes__fields" class="md:w-3/4 grid auto-rows-auto gap-8">
-          <div class="w-64 py-3 px-8 flex space-x-4 justify-center items-center text-sm text-white bg-black cursor-pointer rounded" @click="showSpotifyModal">
+          <div class="w-full mt-2 sm:w-64 sm:mt-0 py-3 px-8 flex space-x-4 justify-center items-center text-sm text-white bg-black cursor-pointer rounded" @click="showSpotifyModal">
             <img src="@/assets/images/ic-spotify.svg" width="21" />
             <p>Import from Spotify</p>
           </div>
