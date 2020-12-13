@@ -1,21 +1,35 @@
 <template>
   <div id="product-page" class="mx-auto">
-    <div id="header" class="container pt-8 pb-4 px-8 mx-auto flex flex-row items-center justify-between">
+    <div id="modal-overlay" @click="closeSpotifyModal"></div>
+    <div id="header" class="container pt-5 pb-4 px-8 mx-auto flex flex-row items-center justify-between">
       <div class="flex flex-row items-center space-x-4">
         <img src="@/assets/images/logo.svg" width="40" />
         <h3>Tilesy</h3>
       </div>
       <div>
-        <a href="https://instagram.com/tilesyco" target="blank"><img class="hover:opacity-70" src="@/assets/images/ic-ig-logo.svg" width="21" /></a>
+        <a href="https://instagram.com/tilesyco" target="_blank"><img class="hover:opacity-70" src="@/assets/images/ic-ig-logo.svg" width="21" /></a>
       </div>
     </div>
-    <div id="modal-overlay" @click="closeSpotifyModal"></div>
     <div id="product-page__main" class="text-left grid auto-rows-auto sm:grid-cols-2 items-center">
-      <div class="p-4 md:p-8">
-        <PlayerMockup ref="playerMockup" class="md:w-3/4 mx-auto" :coverImage="coverImage" :songName="songName" :artistName="artistName" :duration="duration" :timePlayed="timePlayed" />
-        <div class="mt-4 text-center opacity-70">
-          <img class="inline opacity-50" src="@/assets/images/ic-preview.svg" width="16" />
-          <p class="ml-3 inline align-middle">Live preview</p>
+      <div class="px-4 md:p-4">
+        <PlayerMockup ref="playerMockup" class="md:w-3/4 mx-auto"
+          :trackId="trackId"
+          :coverImage="coverImage"
+          :songName="songName"
+          :artistName="artistName"
+          :duration="duration"
+          :timePlayed="timePlayed"
+          :colour="mockupColour"
+        />
+        <div class="mt-4 flex justify-center space-x-8">
+          <div class="opacity-50">
+            <img class="inline opacity-50" src="@/assets/images/ic-preview.svg" width="16" />
+            <p class="ml-2 inline align-middle">Live preview</p>
+          </div>
+          <div @click="toggleMockupColour" class="hover:opacity-70 cursor-pointer">
+            <img class="inline" src="@/assets/images/ic-bulb.svg" width="16" />
+            <p class="ml-2 inline align-middle">Switch color</p>
+          </div>
         </div>
       </div>
       <div id="product-page__attributes" class="p-4 md:p-8 grid auto-rows-auto gap-8">
@@ -43,7 +57,7 @@
             <label>Cover image</label>
             <div class="text-input-with-icon">
               <img src="@/assets/images/ic-paperclip.svg" />
-              <input type="text" id="cover-image" class="mr-3" v-model="coverImage" autocomplete="off" />
+              <input type="text" id="cover-image" class="mr-3" v-model="coverImage" autocomplete="off" readonly />
               <span class="mr-2 flex space-x-2 items-center text-xs opacity-50 hover:opacity-70 cursor-pointer" @click="this.$refs.localCover.click()">
                 <img src="@/assets/images/ic-upload.svg" width="12" />
                 <span class="mt-1">Upload</span>
@@ -112,7 +126,7 @@
       <img src="@/assets/images/ic-cross.svg" class="w-3 float-right cursor-pointer opacity-70 hover:opacity-90" @click="toggleSpotifyModal" />
       <div>
         <h2 class="mt-2">Get track from Spotify</h2>
-        <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. Copy the link & paste it below.</p>
+        <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. Then just copy the link & paste it below. <a href="spotify:open" target="_blank">Open Spotify</a></p>
       </div>
       <p v-if="spotifyError" class="py-2 px-4 text-sm text-white bg-red-500 leading-relaxed rounded">{{ spotifyError }}</p>
       <div>
@@ -147,6 +161,8 @@ export default {
       priceAmount: '19.99',
       shippingAmount: '4.99',
       coverImage: 'https://i.scdn.co/image/ab67616d0000b273d08209944468440145f01524',
+      mockupColour: 'black',
+      trackId: '1Slwb6dOYkBlWal1PGtnNg',
       songName: 'Thinking out Loud',
       artistName: 'Ed Sheeran',
       duration: '4:42',
@@ -212,6 +228,9 @@ export default {
     });
   },
   methods: {
+    toggleMockupColour() {
+      this.mockupColour = this.mockupColour == 'black' ? 'white' : 'black';
+    },
     async uploadImage() {
       const file = this.$refs.localCover.files[0];
       if (!file) return;
@@ -257,6 +276,7 @@ export default {
       axios.get(`${process.env.VUE_APP_API_URL}/get-track?trackId=${trackId}`).then(response => {
         const { data } = response;
 
+        this.trackId = trackId;
         this.songName = data.name;
         this.artistName = data.artists.map(a => a.name).join(', ');
         this.coverImage = data.images[0].url;
@@ -283,6 +303,7 @@ export default {
         data: {
           currencyCode: this.currency.code,
           mockup: this.$refs.playerMockup.$el.innerHTML,
+          colour: this.mockupColour,
           song: {
             songName: this.songName,
             artistName: this.artistName,

@@ -14,3 +14,40 @@ uploadImage() {
       this.coverImage = response.data.url;
     });
 }
+
+<template>
+  <div id="player-mockup">
+    <svg viewBox="0 0 400 560" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect width="400" height="560" rx="4" fill="black" fill-opacity="0.05"/>
+
+      <rect id="cover-placeholder" x="50" y="40" width="300" height="300" rx="4" fill="black" fill-opacity="0.05" />      
+      <clipPath id="cover-clip"><use xlink:href="#cover-placeholder" /></clipPath>
+
+      <image v-show="coverImage != null" :href="coverImage" x="50" y="40" width="300" rx="4" fill="black" clip-path="url(#cover-clip)" />
+
+      <image v-show="spotifyCode == null" href="@/assets/images/spotify-code.svg" x="25%" y="500" width="200" rx="4" fill="black" />
+      
+      <rect x="40" y="420" width="320" height="2" rx="1" fill="black"/>
+      <circle cx="101" cy="422" r="6" fill="black"/>
+
+
+      <text x="32" y="440" font-family="Circular, Arial, Helvetica, sans-serif" font-size="0.6em" fill="black">{{ timePlayed != null ? timePlayed : '1:20' }}</text>
+      <text x="350" y="440" font-family="Circular, Arial, Helvetica, sans-serif" font-size="0.6em" fill="black" >{{ duration != null ? duration : '4:30' }}</text>
+
+      
+      <circle cx="200" cy="460" r="24" fill="#1A1A1A"/>
+      <path d="M160 394L145 402.66V385.34L160 394Z" fill="white" transform="translate(50,65)" />
+      <path d="M226 394L211 402.66V385.34L226 394Z" fill="#1A1A1A" transform="translate(50,65)" />
+      
+      <rect x="225" y="386" width="2" height="16" fill="#1A1A1A" transform="translate(50,65)" />
+      <path d="M74 394L89 402.66V385.34L74 394Z" fill="#1A1A1A" transform="translate(50,65)" />
+
+      <rect width="2" height="16" transform="matrix(-1 0 0 1 125 451)" fill="#1A1A1A"/>
+
+      <foreignObject width="230" height="100%" x="40" y="360">
+        <xhtml:p style="margin: 0; padding: 0; color:black; font-family='Circular, Arial, Helvetica, sans-serif'; font-size: 1.2em; font-weight: bold;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ songName != null ? songName : 'Name of song' }}</xhtml:p>
+        <xhtml:p style="display:block; margin: 0; padding: 0; color:black; font-family='Circular, Arial, Helvetica, sans-serif'; font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ artistName != null ? artistName : 'Artist name' }}</xhtml:p>
+      </foreignObject>
+    </svg>
+  </div>
+</template>
