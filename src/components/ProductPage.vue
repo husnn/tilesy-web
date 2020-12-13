@@ -1,17 +1,17 @@
 <template>
   <div id="product-page" class="mx-auto">
-    <div id="header" class="container pt-8 pb-4 px-8 mx-auto flex flex-row items-center justify-between">
+    <div id="modal-overlay" @click="closeSpotifyModal"></div>
+    <div id="header" class="container pt-5 pb-4 px-8 mx-auto flex flex-row items-center justify-between">
       <div class="flex flex-row items-center space-x-4">
         <img src="@/assets/images/logo.svg" width="40" />
         <h3>Tilesy</h3>
       </div>
       <div>
-        <a href="https://instagram.com/tilesyco" target="blank"><img class="hover:opacity-70" src="@/assets/images/ic-ig-logo.svg" width="21" /></a>
+        <a href="https://instagram.com/tilesyco" target="_blank"><img class="hover:opacity-70" src="@/assets/images/ic-ig-logo.svg" width="21" /></a>
       </div>
     </div>
-    <div id="modal-overlay" @click="closeSpotifyModal"></div>
     <div id="product-page__main" class="text-left grid auto-rows-auto sm:grid-cols-2 items-center">
-      <div class="p-4 md:p-8">
+      <div class="px-4 md:p-4">
         <PlayerMockup ref="playerMockup" class="md:w-3/4 mx-auto"
           :trackId="trackId"
           :coverImage="coverImage"
@@ -126,7 +126,7 @@
       <img src="@/assets/images/ic-cross.svg" class="w-3 float-right cursor-pointer opacity-70 hover:opacity-90" @click="toggleSpotifyModal" />
       <div>
         <h2 class="mt-2">Get track from Spotify</h2>
-        <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. Copy the link & paste it below.</p>
+        <p class="mt-2 text-sm opacity-70">Open the app & try sharing your song. Then just copy the link & paste it below. <a href="spotify:open" target="_blank">Open Spotify</a></p>
       </div>
       <p v-if="spotifyError" class="py-2 px-4 text-sm text-white bg-red-500 leading-relaxed rounded">{{ spotifyError }}</p>
       <div>

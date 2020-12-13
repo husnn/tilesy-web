@@ -1,7 +1,7 @@
 <template>
   <div id="player-mockup">
     <svg viewBox="0 0 500 700" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <rect width="500" height="700" rx="8" fill="black" :fill-opacity="colour == 'white' ? '0.25' : '0.05'" />
+      <rect width="500" height="700" rx="8" fill="#1A1A1A" :fill-opacity="colour == 'white' ? '1' : '0'" />
       <!-- Cover -->
       <g>
         <rect id="cover-placeholder" x="75" y="50" width="350" height="350" rx="4" fill="black" fill-opacity="0.05" />

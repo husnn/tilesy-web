@@ -1,5 +1,5 @@
 <template>
-  <image id="codeImage" :href="codeUrl" />
+  <image id="codeImage" :href="codeUrl" opacity="1" />
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     async updateImage() {
-      const bgColour = this.colour == 'black' ? 'FFFFFF' : '000000';
+      const bgColour = this.colour == 'black' ? 'FFFFFF' : '1A1A1A';
       this.codeUrl = `https://scannables.scdn.co/uri/plain/svg/${bgColour}/${this.colour}/640/spotify:track:${this.trackId}`;
       
       try {
