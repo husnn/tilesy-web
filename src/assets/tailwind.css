@@ -155,3 +155,44 @@ a.lowkey {
 .owl-carousel {
   overflow: hidden;
 }
+
+#spotify-code__phone {
+  transform: translate(-15%, 0) rotate(-30deg);
+}
+
+.phone-animation {
+  animation: move-phone-in 2s ease-in-out 2;;
+  animation-fill-mode: both;
+  animation-direction: alternate;
+}
+
+@keyframes move-phone-in {
+  0% { transform: translate(-15%, 0) rotate(-30deg); }
+  50% {
+    transform: translate(-30%, 0) rotate(-45deg);
+  }
+  70% {
+    transform: translate(-50%, 0) rotate(-45deg);
+  }
+  90% {
+    transform: translate(-90%, 15%) rotate(-30deg) scale(1.5);
+  }
+  100% {
+    transform: translate(-95%, 15%) rotate(-20deg) scale(1.5);
+  }
+}
+
+.code-animation {
+  animation: code-flash 0.5s 1;;
+  animation-delay: 2s;
+  animation-fill-mode: both;
+  animation-direction: alternate;
+}
+
+@keyframes code-flash {
+  0% { filter: blur(0px); }
+  25% { filter: blur(2px); }
+  50% { filter: blur(0px); filter: grayscale(80%); }
+  75% { filter: blur(2px); }
+  100% { filter: blur(0px); }
+}

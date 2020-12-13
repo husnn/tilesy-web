@@ -107,14 +107,26 @@
         <p class="mt-4">Share with them a song that you're both obsessed with.</p>
       </div>
 
-      <ul class="faq sm:max-w-3/4 sm:mx-auto">
-        <li v-for="(qa, index) in faq" :key="index">
-          <div class="title"><h5>{{ qa[0] }}</h5></div>
-          <div class="panel">
-            <p v-for="(line, index) in qa[1]" :key="index">{{ line }}</p>
-          </div>
-        </li>
-      </ul>
+      <div class="sm:max-w-3/4 sm:mx-auto">
+        <h3>Personalised Spotify code</h3>
+        <p class="mt-4">Anyone can scan the code with their Spotify app and your song will start playing instantly.</p>
+        <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 mx-auto flex justify-center items-center">
+          <img id="spotify-code__code" class="w-full mt-4 select-none fill-white" src="@/assets/images/spotify-code-green.svg" draggable="false" />
+          <img id="spotify-code__phone" class="relative w-3/4 select-none" src="@/assets/images/spotify-code-scan-phone.png" draggable="false" />
+        </div>
+      </div>
+
+      <div class="container lg:max-w-1/2 mx-auto">
+        <h3>Frequently asked questions</h3>
+        <ul class="faq mt-4">
+          <li v-for="(qa, index) in faq" :key="index">
+            <div class="title"><h5>{{ qa[0] }}</h5></div>
+            <div class="panel">
+              <p v-for="(line, index) in qa[1]" :key="index">{{ line }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div class="py-8 flex space-x-4 justify-center text-sm">
@@ -224,6 +236,21 @@ export default {
           1280: {
               items: 5
           }
+      }
+    });
+
+    $(window).scroll(function() {
+      var top_of_element = $("#spotify-code__phone").offset().top;
+      var bottom_of_element = $("#spotify-code__phone").offset().top + $("#spotify-code__phone").outerHeight();
+      var bottom_of_screen = $(window).scrollTop() + $(window).innerHeight();
+      var top_of_screen = $(window).scrollTop();
+
+      if ((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
+          $('#spotify-code__phone').addClass('phone-animation');
+          $('#spotify-code__code').addClass('code-animation');
+      } else {
+          $('#spotify-code__phone').removeClass('phone-animation');
+          $('#spotify-code__code').removeClass('code-animation');
       }
     });
   },
