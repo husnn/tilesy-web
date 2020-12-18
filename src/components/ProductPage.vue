@@ -69,8 +69,8 @@
             <div class="mb-4 flex justify-between items-center">
               <p class="font-bold">5 x 7 inch</p>
               <p class="text-right">
-                <span id="buy__price" class="font-bold">{{ currency.code }} {{ priceAmount }}</span>
-                <span id="buy__shipping" class="block text-xs text-gray-400">+{{ shippingAmount }} Shipping</span>
+                <span id="buy__price" class="flex space-x-2 items-center font-bold"><del>{{ originalPriceAmount }}</del><span class="text-sm opacity-70"> {{ currency.code }} {{ priceAmount }}</span></span>
+                <span id="buy__shipping" class="block text-xs text-gray-400">+{{ shippingAmount }} P&P</span>
               </p>
             </div>
             <button class="w-full btn-primary" @click="goToCheckout" :disabled="!buyButtonEnabled">Get yours now</button>
@@ -114,6 +114,11 @@
           <img id="spotify-code__code" class="w-full mt-4 select-none fill-white" src="@/assets/images/spotify-code-green.svg" draggable="false" />
           <img id="spotify-code__phone" class="relative w-3/4 select-none" src="@/assets/images/spotify-code-scan-phone.png" draggable="false" />
         </div>
+      </div>
+
+      <div class="mt-4 sm:max-w-3/4 sm:mx-auto">
+        <h3>Only high-quality acrylic</h3>
+        <p class="mt-4">Your custom designs are printed on premium 3 mm acrylic sheets for enhanced robustness (vs traditional glass).</p>
       </div>
 
       <div class="container lg:max-w-1/2 mx-auto">
@@ -170,6 +175,7 @@ export default {
         code: 'GBP',
         symbol: '£'
       },
+      originalPriceAmount: '24.99',
       priceAmount: '19.99',
       shippingAmount: '4.99',
       coverImage: 'https://i.scdn.co/image/ab67616d0000b273d08209944468440145f01524',
@@ -186,14 +192,22 @@ export default {
       buyButtonEnabled: true,
       carouselImages: [
         "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/121201967_2925785930976141_3185171781063249833_n.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_794xN.2667371689_b39l.jpg",
         "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/129320272_419751222517037_141585343197074418_n.jpg",
         "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/5e98bb4646a32a8ebb453a2f86e3342f.jpg",
         "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/c0711294ce8b779c78c735776b602e42.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_794xN.2698356575_880s.jpg",
         "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_1588xN.2576333414_rkfa.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_794xN.2613733077_li3w.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_794xN.2650944788_2o82.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_794xN.2675217129_ksz9.jpg",
+        "https://tilesy.s3.eu-west-2.amazonaws.com/showcase/il_794xN.2675228823_5for.jpg"
       ],
       faq: [
         ['Who is this for?', ['In short... anyone.']],
-        ['Where do you deliver?', ['We ship to anywhere in the US, UK, Canada, Europe, Australia and New Zealand.']]
+        ['Do you ship to my country?', ['We ship internationally to the US, UK, Canada, Europe, Russia, Australia and New Zealand.']],
+        ['How long does delivery take?', ['Please allow up to a week for customisation. Once your order is dispatched, the delivery time is usally 5-7 days.']],
+        ['How can I contact you?', [`If you have any questions/concerns please reach out to us via hello@tilesy.co - we\'ll be happy to help.`]]
       ]
     }
   },
@@ -201,6 +215,7 @@ export default {
     axios.get(`${process.env.VUE_APP_API_URL}/get-price`).then(response => {
       const { data } = response;
       this.currency = data.currency;
+      this.originalPriceAmount = data.originalAmount;
       this.priceAmount = data.amount;
     });
 
@@ -228,7 +243,7 @@ export default {
       responsiveClass: true,
       responsive: {
           0: {
-              items: 1.5
+              items: 1.25
           },
           600: {
               items: 3

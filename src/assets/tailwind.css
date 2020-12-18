@@ -175,10 +175,10 @@ a.lowkey {
     transform: translate(-50%, 0) rotate(-45deg);
   }
   90% {
-    transform: translate(-90%, 15%) rotate(-30deg) scale(1.5);
+    transform: translate(-90%, 15%) rotate(-30deg) scale(1.2);
   }
   100% {
-    transform: translate(-95%, 15%) rotate(-20deg) scale(1.5);
+    transform: translate(-95%, 15%) rotate(-20deg) scale(1.2);
   }
 }
 
@@ -191,8 +191,8 @@ a.lowkey {
 
 @keyframes code-flash {
   0% { filter: blur(0px); }
-  25% { filter: blur(2px); }
+  25% { filter: blur(1px); }
   50% { filter: blur(0px); filter: grayscale(80%); }
-  75% { filter: blur(2px); }
+  75% { filter: blur(1px); }
   100% { filter: blur(0px); }
 }
