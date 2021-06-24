@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+
 import ProductPage from "@/components/ProductPage";
 import OrderPlaced from "@/components/OrderPlaced";
 
